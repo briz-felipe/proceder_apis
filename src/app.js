@@ -1,13 +1,30 @@
 const express = require('express');
 const apiRoutes = require('./routes/apiRoutes');
+const staticFiles = require('./routes/staticFiles');
+const authRoutes = require('./routes/auth');
 const path = require('path');
 const db = require('./models'); // Importa a configuração do Sequelize
 
 const app = express();
 
 app.use(express.json());
-app.use('/api', apiRoutes);
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'login','index.html'));
+});
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+app.use('/api', apiRoutes);
+
+app.use('/static', staticFiles);
+
+app.use('/auth', authRoutes);
+
+// app.get("/static/main.js", (req, res) => {
+//     res.sendFile(path.join(__dirname, '..','public','js', 'main.js'));
+// });
+
 
 app.get('/page', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'root', 'index.html'));

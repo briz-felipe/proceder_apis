@@ -21,4 +21,18 @@ router.post('/users', async (req, res) => {
     }
 });
 
+// Rota para obter um usuário pelo email
+router.get('/users/:email', async (req, res) => {
+    try {
+        const user = await db.User.findOne({ where: { email: req.params.email } });
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar usuário' });
+    }
+});
+
 module.exports = router;
