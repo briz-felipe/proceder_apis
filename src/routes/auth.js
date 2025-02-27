@@ -28,4 +28,20 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/validate-token', (req, res) => {
+    const token = req.headers['authorization'].split(' ')[1];
+    jwt.verify(token, secretKey, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ valid: false });
+        }
+        res.json({ valid: true });
+    });
+});
+
+// Rota para logout
+router.post('/logout', (req, res) => {
+    // Invalidate the token on the client side by removing it from localStorage
+    res.status(200).json({ message: 'Logout successful' });
+});
+
 module.exports = router;

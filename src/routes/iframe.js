@@ -4,7 +4,8 @@ const db = require('../models');
 const router = express.Router();
 
 router.get('/home', (req, res) => {
-    res.json({ message: 'API is working' });
+    res.render('iframe/home/index');
+    
 });
 
 module.exports = router;

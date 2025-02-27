@@ -9,5 +9,44 @@ function set_alert(message, status, elementId) {
     $(`#${elementId}`).html(alertElement);
 }
 
+async function isTokenValid(token) {
+    try {
+        const response = await fetch('/auth/validate-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
+        return data.valid;
+    } catch (error) {
+        console.error('Erro ao validar token:', error);
+        return false;
+    }
+}
 
-console.log('Document is ready');
+
+function logout() {
+    $.ajax({
+        url: '/auth/logout',
+        type: 'POST',
+        success: function () {
+            localStorage.removeItem('token');
+            window.location.href = '/?logout=true';
+        }
+    });
+}
+
+async function checkTokenAndProceed() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        const valid = await isTokenValid(token);
+        if (valid) {
+            console.log('Token is valid');
+            return;
+        };
+    };
+    window.location.href = '/?unauthorized=true';
+}
+

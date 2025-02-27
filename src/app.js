@@ -8,10 +8,14 @@ const db = require('./models');
 
 const app = express();
 
+// Set EJS as the templating engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '..', 'views'));
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'login','index.html'));
+    res.render('login/index');
 });
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -24,20 +28,6 @@ app.use('/iframe', iframeRoutes);
 
 app.use('/auth', authRoutes);
 
-// app.get("/static/main.js", (req, res) => {
-//     res.sendFile(path.join(__dirname, '..','public','js', 'main.js'));
-// });
-
-
-app.get('/page', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'root', 'index.html'));
-});
-
-app.get('/data', (req, res) => {
-    res.json({ title: 'Consegui, porra!', message: 'teste paragrafo.', buttonText: 'Clique aqui' });
-});
-
-// Teste de conexão com o banco de dados
 db.sequelize.authenticate()
     .then(() => {
         console.log('Conexão com o banco de dados estabelecida com sucesso.');
