@@ -14,7 +14,7 @@ function login() {
             console.log(response);
             if (response.token) {
                 localStorage.setItem('token', response.token);
-                window.location.href = '/dashboard';
+                window.location.href = '/iframe/home';
             } else {
                 set_alert(response.error, false, 'auth-alert');
             }
