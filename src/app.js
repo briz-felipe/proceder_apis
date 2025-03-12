@@ -5,6 +5,7 @@ const authRoutes = require('./routes/auth');
 const iframeRoutes = require('./routes/iframe');
 const path = require('path');
 const db = require('./models');
+const createRootUser = require('./seed');
 
 const app = express();
 
@@ -35,6 +36,7 @@ db.sequelize.authenticate()
     })
     .then(() => {
         console.log('Tabelas sincronizadas com sucesso.');
+        return createRootUser();
     })
     .catch(err => {
         console.error('Não foi possível conectar ao banco de dados:', err);

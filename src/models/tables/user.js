@@ -4,11 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         username: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         firstName: {
             type: DataTypes.STRING,
@@ -21,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        isActive: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
         }
     }, {
         timestamps: true,
@@ -33,6 +40,15 @@ module.exports = (sequelize, DataTypes) => {
             }
         }
     });
+
+    // Associação Many-to-Many com Group
+    User.associate = (models) => {
+        User.belongsToMany(models.Group, {
+            through: 'UserGroup', // Nome da tabela de associação
+            foreignKey: 'userId', // Chave estrangeira em UserGroup que referencia User
+            otherKey: 'groupId' // Chave estrangeira em UserGroup que referencia Group
+        });
+    };
 
     return User;
 };
