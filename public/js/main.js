@@ -50,3 +50,33 @@ async function checkTokenAndProceed() {
     window.location.href = '/?unauthorized=true';
 }
 
+async function rootAdminMenu(){
+    const username = localStorage.getItem('proceder_username');
+    const response =  await fetch(`/api/users/isRoot/${username}`,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+    const root = await response.json()
+    if (root.root){
+        const navbar = $('#navbar-ul')
+        const rootLi = `
+         <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownadmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Admin
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownadmin">
+                <li><h6 class="dropdown-header">Cadastros</h6></li>
+                <li><a class="dropdown-item" href="/user/create">Usuário</a></li>
+                <li><a class="dropdown-item" href="/user/group/create">Empresa</a></li>
+                <li><a class="dropdown-item" href="/user/group/create">Grupo</a></li>
+            </ul>
+        </li>
+        `
+        navbar.append(rootLi)
+
+    }
+    console.log(root)
+}
+
