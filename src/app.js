@@ -3,6 +3,7 @@ const apiRoutes = require('./routes/apiRoutes');
 const staticFiles = require('./routes/staticFiles');
 const authRoutes = require('./routes/auth');
 const iframeRoutes = require('./routes/iframe');
+const rootRoutes = require('./routes/root')
 const path = require('path');
 const db = require('./models');
 const createRootUser = require('./seed');
@@ -26,6 +27,8 @@ app.use('/api', apiRoutes);
 app.use('/static', staticFiles);
 
 app.use('/iframe', iframeRoutes);
+
+app.use('/admin', rootRoutes);
 
 app.use('/auth', authRoutes);
 

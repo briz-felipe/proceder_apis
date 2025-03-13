@@ -3,6 +3,8 @@ const db = require('../models');
 
 const router = express.Router();
 
+
+
 // Rota para criar um novo usuário
 router.post('/users', async (req, res) => {
     try {
@@ -15,3 +17,6 @@ router.post('/users', async (req, res) => {
 });
 
 module.exports = router;
+
+
+

@@ -67,10 +67,7 @@ async function rootAdminMenu(){
                 Admin
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownadmin">
-                <li><h6 class="dropdown-header">Cadastros</h6></li>
-                <li><a class="dropdown-item" href="/user/create">Usuário</a></li>
-                <li><a class="dropdown-item" href="/user/group/create">Empresa</a></li>
-                <li><a class="dropdown-item" href="/user/group/create">Grupo</a></li>
+                <li><a class="dropdown-item" href="/admin/users/create">Cadastros</a></li>
             </ul>
         </li>
         `
@@ -80,3 +77,41 @@ async function rootAdminMenu(){
     console.log(root)
 }
 
+function addParamsToUrl(params) {
+    let url = new URL(window.location.href);
+
+    for (let key in params) {
+        url.searchParams.set(key, params[key]);
+    }
+
+    window.location.href = url.toString();
+}
+
+function removeParamFromUrl(key) {
+    let url = new URL(window.location.href);
+
+    url.searchParams.delete(key);
+
+    window.location.href = url.toString();
+}
+
+function getAllUrlParamsIfAny() {
+    // Cria um objeto URL com a URL atual
+    let url = new URL(window.location.href);
+
+    // Verifica se há parâmetros na URL
+    if (url.searchParams.toString() === "") {
+        return null; // Retorna null se não houver parâmetros
+    }
+
+    // Cria um objeto para armazenar os parâmetros
+    let params = {};
+
+    // Itera sobre todos os parâmetros da URL
+    url.searchParams.forEach((value, key) => {
+        params[key] = value;
+    });
+
+    // Retorna o objeto com os parâmetros
+    return params;
+}

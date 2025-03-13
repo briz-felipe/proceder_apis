@@ -18,5 +18,8 @@ router.get("/logo.svg", async (req, res) => {
 router.get("/iframe/home/main.js", async (req, res) => {
     res.sendFile(path.join(__dirname, '..', '..', 'public', 'js','iframe','home', 'main.js'));
 });
+router.get("/root/users/main.js", async (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '..', 'public', 'js','root','createUsers.js'));
+});
 
 module.exports = router;
