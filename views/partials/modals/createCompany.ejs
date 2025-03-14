@@ -1,0 +1,49 @@
+  <div class="modal fade" id="adminCreateCompany" tabindex="-1" aria-labelledby="adminCreateCompanyLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="adminCreateCompanyLabel">Cadastrar novos Empresa</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <small class="text-muted mb-3">Como atendemos principalmente empresas, aqui podemos cadastra-la, .</small>
+            <form class="row g-3">
+                <!-- cnpj -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="cnpj" class="form-label">CNPJ <span class="text-danger">*</span></label>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var cnpjInput = document.getElementById('company_cnpj');
+                                cnpjInput.addEventListener('input', function (e) {
+                                    var value = e.target.value.replace(/\D/g, '');
+                                    if (value.length > 14) value = value.slice(0, 14);
+                                    value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+                                    value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+                                    value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+                                    value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                                    e.target.value = value;
+                                });
+                            });
+                        </script>
+                        <input type="text" class="form-control" id="company_cnpj" placeholder="Digite o cnpj" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome <span class="text-danger">*</span></label>
+                        <input type="name" class="form-control" id="company_name" placeholder="Digite o name" required>
+                    </div>
+                </div>
+                <!-- Botão de Enviar -->
+                <div class="modal-footer">,
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Continuar</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>

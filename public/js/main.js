@@ -9,6 +9,42 @@ function set_alert(message, status, elementId) {
     $(`#${elementId}`).html(alertElement);
 }
 
+async function proceder_fetch(url, method, data) {
+    try {
+        const options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        if (data) {
+            options.body = JSON.stringify(data);
+        }
+        const response = await fetch(url, options);
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        console.error('Erro ao realizar fetch:', error);
+        return null;
+    }
+};
+
+async function getGroups() {
+    return await proceder_fetch('/api/groups', 'GET');
+}
+
+async function createGroup(name) {
+    return await proceder_fetch(`/api/create/group`, 'POST',{"name":name});
+}
+
+async function createCompany(cnpj, name) {
+    return await proceder_fetch(`/api/create/company`, 'POST',{"cnpj":cnpj,"name":name});
+}
+
+async function getCompanies() {
+    return await proceder_fetch('/api/companies', 'GET');
+}
+
 async function isTokenValid(token) {
     try {
         const response = await fetch('/auth/validate-token', {
@@ -23,8 +59,8 @@ async function isTokenValid(token) {
     } catch (error) {
         console.error('Erro ao validar token:', error);
         return false;
-    }
-}
+    };
+};
 
 
 function logout() {
@@ -114,4 +150,26 @@ function getAllUrlParamsIfAny() {
 
     // Retorna o objeto com os parâmetros
     return params;
+}
+
+function addLoading(elementId) {
+    const spinner = `
+    <div class="spinner-grow spinner-grow-sm" role="status">
+    <span class="visually-hidden">Loading...</span>
+    </div>
+    `;
+    $(`#${elementId}`).html(spinner);
+}
+
+function removeLoading(elementId,text) {
+    $(`#${elementId}`).html(text);
+}
+
+function addInvalidFeedback(elementId, message) {
+    const existingFeedback = $(`#${elementId}`).next('.invalid-feedback');
+    if (existingFeedback.length) {
+        existingFeedback.text(message);
+    } else {
+        $(`#${elementId}`).after(`<div class="invalid-feedback">${message}</div>`);
+    }
 }

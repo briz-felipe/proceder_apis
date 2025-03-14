@@ -23,3 +23,42 @@ exports.isRoot = async (req,res) => {
     }
 }
 
+exports.groups = async (req,res) => {
+    try{
+        const groups = await db.Group.findAll();
+        res.status(200).json(groups)
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao consultar grupos' });
+    };
+};
+
+exports.createGroup = async (req,res) => {
+    try{
+        const { name } = req.body;
+        const newGroup = await db.Group.create({ name });
+        res.status(201).json(newGroup);
+    } catch (error) {
+        const alert = error.parent.message;
+        res.status(500).json({ error: alert });
+    };
+};
+
+exports.companies = async (req,res) => {
+    try{
+        const companies = await db.Company.findAll();
+        res.status(200).json(companies)
+    } catch (error) {
+        const alert = error.parent.message;
+        res.status(500).json({ error: alert });
+    };
+};
+
+exports.createCompany = async (req,res) => {
+    try{
+        const { cnpj,name } = req.body;
+        const newCompany = await db.Company.create({ cnpj,name });
+        res.status(201).json(newCompany);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao criar empresa' });
+    };
+}

@@ -1,0 +1,42 @@
+<div class="modal fade" id="adminCreateGRoup" tabindex="-1" aria-labelledby="adminCreateGRoupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="adminCreateGRoupLabel">Cadastrar novos grupo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <!-- name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="group_name" placeholder="Digite o nome" required>
+                        <small class="text-muted">Esses grupos serão utilizados para gerenciar os níveis de acesso em cada etapa do desenvolvimento deste sistema.</small>
+                    </div>
+                    <!-- Botão de Enviar -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="btnCreateGroup" type="button" class="btn btn-primary">Continuar</button>
+                    </div>
+                </form>
+                <div id="groupTableCard" class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table class="table table-striped text-center">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th>id</th>
+                                    <th>Nome</th>
+                                    <th>created_at</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="groupTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,14 +12,16 @@
         </div>
         <div class="d-flex justify-content-lg-end">
             <div class="btn-group" role="group">
-                <button id="" type="button" class="btn btn-outline-danger bi bi-database-fill-lock" data-bs-toggle="modal" data-bs-target="#adminCreateUser"></button>
-                <button id="" type="button" class="btn btn-outline-secondary bi bi-building-fill-add" data-bs-toggle="modal" data-bs-target="#adminCreateUser"></button>
-                <button id="" type="button" class="btn btn-outline-warning bi bi-people-fill ml-2" data-bs-toggle="modal" data-bs-target="#adminCreateUser"></button>
+                <button id="" type="button" class="btn btn-secondary bi bi-database-fill-lock" data-bs-toggle="modal" data-bs-target="#adminCreateGRoup"></button>
+                <button id="" type="button" class="btn btn-secondary bi bi-building-fill-add" data-bs-toggle="modal" data-bs-target="#adminCreateCompany"></button>
+                <button id="" type="button" class="btn btn-secondary bi bi-people-fill ml-2" data-bs-toggle="modal" data-bs-target="#adminCreateUser"></button>
             </div>
         </div>
         <hr>
     </div>
+    <%- include('../partials/modals/createCompany') %>
     <%- include('../partials/modals/createUsers') %>
+    <%- include('../partials/modals/createGroup') %>
     <script src="/static/src/main.js"></script>
     <script src="/static/root/users/main.js"></script>
 </body>

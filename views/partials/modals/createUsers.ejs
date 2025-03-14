@@ -1,4 +1,4 @@
-  <div class="modal fade" id="adminCreateUser" tabindex="-1" aria-labelledby="adminCreateUserLabel" aria-hidden="true">
+<div class="modal fade" id="adminCreateUser" tabindex="-1" aria-labelledby="adminCreateUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -10,14 +10,14 @@
                 <!-- Username -->
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="username" placeholder="Digite o username" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <!-- Email -->
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="email" placeholder="Digite o email" required>
                     </div>
                 </div>
@@ -25,34 +25,24 @@
                 <div class="col-md-6">
                     <!-- Primeiro Nome -->
                     <div class="mb-3">
-                        <label for="primeiroNome" class="form-label">Primeiro Nome</label>
+                        <label for="primeiroNome" class="form-label">Primeiro Nome <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="primeiroNome" placeholder="Digite o primeiro nome" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <!-- Último Nome -->
                     <div class="mb-3">
-                        <label for="ultimoNome" class="form-label">Último Nome</label>
+                        <label for="ultimoNome" class="form-label">Último Nome <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="ultimoNome" placeholder="Digite o último nome" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <label for="seletct-groups">Grupos de permissões</label>
-                    <select id="seletct-groups" class="form-select" aria-label="Default select example">
-                        <option selected disabled>Selecionar</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                    <textarea name='userGroup' placeholder='Grupos' class="form-control"></textarea>
                 </div>
                 <div class="col-md-6">
-                    <label for="seletct-groups">Associar a uma empresa</label>
-                    <select id="seletct-groups" class="form-select" aria-label="Default select example">
-                        <option selected disabled>Selecionar</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                    <label for="userComanies">Associar empresas ao usuário</label>
+                    <textarea name='userComanies' placeholder='Empresas' class="form-control"></textarea>
                 </div>
                 <!-- Botão de Enviar -->
                 <div class="modal-footer">,
