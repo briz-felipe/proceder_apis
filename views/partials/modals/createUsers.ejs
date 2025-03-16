@@ -6,7 +6,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form class="row g-3">
+            <form id="createUserForm" class="row g-3">
+                <div id="userAlert"></div>
                 <!-- Username -->
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -25,15 +26,15 @@
                 <div class="col-md-6">
                     <!-- Primeiro Nome -->
                     <div class="mb-3">
-                        <label for="primeiroNome" class="form-label">Primeiro Nome <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="primeiroNome" placeholder="Digite o primeiro nome" required>
+                        <label for="firstName" class="form-label">Primeiro Nome <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Digite o primeiro nome" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <!-- Último Nome -->
                     <div class="mb-3">
-                        <label for="ultimoNome" class="form-label">Último Nome <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="ultimoNome" placeholder="Digite o último nome" required>
+                        <label for="lastName" class="form-label">Último Nome <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Digite o último nome" required>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -48,7 +49,7 @@
                 <div class="modal-footer">,
 
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Continuar</button>
+                    <button id="createUserButton" type="button" class="btn btn-primary">Continuar</button>
                 </div>
             </form>
         </div>

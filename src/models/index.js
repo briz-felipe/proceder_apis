@@ -21,4 +21,4 @@ db.Company = require('./tables/company')(sequelize, DataTypes);
 db.User.associate(db);
 db.Group.associate(db);
 
-module.exports = db;
+module.exports = { db, sequelize };

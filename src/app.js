@@ -5,7 +5,7 @@ const authRoutes = require('./routes/auth');
 const iframeRoutes = require('./routes/iframe');
 const rootRoutes = require('./routes/root')
 const path = require('path');
-const db = require('./models');
+const {db} = require('./models');
 const createRootUser = require('./seed');
 
 const app = express();

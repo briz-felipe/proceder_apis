@@ -7,7 +7,8 @@
         </div>
         <div class="modal-body">
             <small class="text-muted mb-3">Como atendemos principalmente empresas, aqui podemos cadastra-la, .</small>
-            <form class="row g-3">
+            <div id="companyAlert"></div>
+            <form class="row g-3" id="companyForm">
                 <!-- cnpj -->
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -40,9 +41,28 @@
                 <div class="modal-footer">,
 
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Continuar</button>
+                    <button id="btnCreateCompany" type="button" class="btn btn-primary">Continuar</button>
                 </div>
             </form>
+            <div id="companyTableCard" class="card shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                        <table class="table table-striped text-center">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th>id</th>
+                                <th>CNPJ</th>
+                                <th>Nome</th>
+                                <th>Empresa ativa?</th>
+                                <th>Data de criação</th>
+                              </tr>
+                            </thead>
+                            <tbody id="companyTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>

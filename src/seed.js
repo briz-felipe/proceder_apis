@@ -1,4 +1,4 @@
-const db = require('./models');
+const {db} = require('./models');
 require('dotenv').config(); // Carrega variáveis de ambiente do .env
 
 const createRootUser = async () => {

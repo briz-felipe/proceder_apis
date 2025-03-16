@@ -21,5 +21,14 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: true
     });
 
+    Company.associate = (models) => {
+        // Associação Many-to-Many com User
+        Company.belongsToMany(models.User, {
+            through: 'UserCompany', // Nome da tabela de associação
+            foreignKey: 'companyId', // Chave estrangeira em UserCompany que referencia Company
+            otherKey: 'userId' // Chave estrangeira em UserCompany que referencia User
+        });
+    };
+
     return Company;
 };

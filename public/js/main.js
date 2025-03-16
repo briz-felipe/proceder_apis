@@ -29,6 +29,17 @@ async function proceder_fetch(url, method, data) {
     }
 };
 
+async function setAlert(message, status, elementId) {
+    const type = status ? 'success' : 'danger';
+    const alertElement = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        <strong>Atenção!</strong> ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    `;
+    $(`#${elementId}`).html(alertElement);
+}
+
 async function getGroups() {
     return await proceder_fetch('/api/groups', 'GET');
 }
@@ -43,6 +54,10 @@ async function createCompany(cnpj, name) {
 
 async function getCompanies() {
     return await proceder_fetch('/api/companies', 'GET');
+}
+
+async function createAccess(user) {
+    return await proceder_fetch('/api/create/access', 'POST', user);
 }
 
 async function isTokenValid(token) {
@@ -172,4 +187,49 @@ function addInvalidFeedback(elementId, message) {
     } else {
         $(`#${elementId}`).after(`<div class="invalid-feedback">${message}</div>`);
     }
+}
+
+function appendTableFromJson(json, tableId, empty = false) {
+    const tableBody = $(`#${tableId}`);
+
+    if(empty){
+        tableBody.empty();
+    }
+
+    if (Array.isArray(json)) {
+        json.forEach(item => {
+            const row = $('<tr>');
+            for (const key in item) {
+                row.append(`<td>${item[key]}</td>`);
+            }
+            tableBody.append(row);
+        });
+    } else {
+        const row = $('<tr>');
+        for (const key in json) {
+            row.append(`<td>${json[key]}</td>`);
+        }
+        tableBody.append(row);
+    }
+}
+
+function validateForm(formId) {
+    let isValid = true;
+
+    // Limpa mensagens anteriores
+    $(`#${formId} .is-invalid`).removeClass('is-invalid');
+    $(`#${formId} .invalid-feedback`).remove();
+
+    // Itera pelos campos obrigatórios
+    $(`#${formId} :input[required]`).each(function() {
+        if (!$(this).val().trim()) {
+            isValid = false;
+
+            // Adiciona a classe 'is-invalid' e a mensagem de erro
+            $(this).addClass('is-invalid');
+            $(this).after('<div class="invalid-feedback">Campo obrigatório</div>');
+        }
+    });
+
+    return isValid;
 }

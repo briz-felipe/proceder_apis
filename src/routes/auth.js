@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const db = require('../models');
+const {db} = require('../models');
 
 const router = express.Router();
 const secretKey = 'p4pQVFDsuAHvJkHMUBWvim5OIzf479mOfLLoPx2y9eJWc5sdeXBpDdoQYH1CBTsv';

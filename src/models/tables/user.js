@@ -48,6 +48,12 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'userId', // Chave estrangeira em UserGroup que referencia User
             otherKey: 'groupId' // Chave estrangeira em UserGroup que referencia Group
         });
+        // Associação Many-to-Many com Company
+        User.belongsToMany(models.Company, {
+            through: 'UserCompany', // Nome da tabela de associação
+            foreignKey: 'userId', // Chave estrangeira em UserCompany que referencia User
+            otherKey: 'companyId' // Chave estrangeira em UserCompany que referencia Company
+        });
     };
 
     return User;
