@@ -11,54 +11,52 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // Find the user by username
-        const user = await db.User.findOne({ where: { username: username } });
-    
-        if (user) {
-            // Validate the password
-            const isPasswordValid = await bcrypt.compare(password, user.password);
-    
-            if (isPasswordValid) {
-                // Generate JWT token
-                const token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '1h' });
-    
-                // Encode the email in Base64
-                const encodedEmail = Buffer.from(user.email).toString('base64');
-    
-                // Return the token, username, and encoded email
-                res.status(200).json({
-                    token,
-                    username: user.username,
-                    email: encodedEmail // Base64-encoded email
-                });
-            } else {
-                res.status(401).json({ error: 'Senha inválida' });
-            }
-        } else {
-            res.status(404).json({ error: 'Usuário não encontrado' });
+        // Buscar o usuário com campos específicos
+        const user = await db.User.findOne({
+            where: { username },
+            attributes: ['id', 'username', 'password', 'email']
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuário ou senha não encontrado' });
         }
+
+        // Validar a senha
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Usuário ou senha não encontrado' });
+        }
+
+        // Gerar o token JWT e codificar o e-mail em paralelo
+        const [token, encodedEmail] = await Promise.all([
+            jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '1h' }),
+            Buffer.from(user.email).toString('base64')
+        ]);
+
+        // Configurações padrão dos cookies
+        const cookieOptions = {
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 3600000 // 1 hora
+        };
+
+        // Definir cookies
+        res.cookie('token', token, { ...cookieOptions, httpOnly: true });
+        res.cookie('proceder_username', user.username, { ...cookieOptions, httpOnly: false });
+        res.cookie('proceder_email', encodedEmail, { ...cookieOptions, httpOnly: false });
+
+        // Responder com sucesso
+        res.status(200).json({
+            token,
+            username: user.username,
+            email: encodedEmail
+        });
     } catch (error) {
         console.error('Erro durante o login:', error);
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
-    // try {
-    //     const { username, password } = req.body;
-    //     const user = await db.User.findOne({ where: { username: username } });
-    //     if (user) {
-    //         const isPasswordValid = await bcrypt.compare(password, user.password);
-    //         if (isPasswordValid) {
-    //             const token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '1h' });
-    //             res.status(200).json({ token });
-    //         } else {
-    //             res.status(401).json({ error: 'Senha inválida' });
-    //         }
-    //     } else {
-    //         res.status(404).json({ error: 'Usuário não encontrado' });
-    //     }
-    // } catch (error) {
-    //     res.status(500).json({ error: 'Erro ao autenticar usuário' });
-    // }
 });
+
 
 router.post('/validate-token', (req, res) => {
     const token = req.headers['authorization'].split(' ')[1];

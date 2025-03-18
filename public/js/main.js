@@ -44,6 +44,10 @@ async function getGroups() {
     return await proceder_fetch('/api/groups', 'GET');
 }
 
+async function users() {
+    return await proceder_fetch('/api/users', 'GET');
+}
+
 async function createGroup(name) {
     return await proceder_fetch(`/api/create/group`, 'POST',{"name":name});
 }

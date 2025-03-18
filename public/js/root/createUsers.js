@@ -139,9 +139,42 @@ async function _createUser(){
     return response;
 };
 
+async function getUsers(){
+    response = await users();
+    const userTables = $("#usersTables")
+    response.forEach(user => {
+        const card = `
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-title btn btn-outline-secondary">${user.username}</div>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+                            <button type="button" class="btn btn-outline-primary bi bi-pen-fill"></button>
+                            <button type="button" class="btn btn-outline-danger bi bi-trash-fill"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted text-center">
+                    Criado em: ${user.createdAt}
+                </div>
+            </div>
+        </div>
+
+        `
+        userTables.append(card);
+    });
+    
+    return response;
+};
+
 $(document).ready(()=>{
     checkTokenAndProceed(); // Check if token is valid
     rootAdminMenu(); // Show root admin menu
+
+    getUsers().then(response => {
+        console.log('users:', response);
+    })
 
 // função para pegar grupos assim que a pagina for carregada
     getGroups().then((groups)=>{

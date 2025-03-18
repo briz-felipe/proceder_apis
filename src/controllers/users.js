@@ -1,4 +1,5 @@
 const {sequelize,db} = require('../models/index');
+const user = require('../models/tables/user');
 const { generateRandomPassword } = require('./utils');
 
 exports.createUser = async (req, res) => {
@@ -93,6 +94,43 @@ exports.companies = async (req,res) => {
         res.status(500).json({ error: alert });
     };
 };
+
+exports.getUsers = async (req, res) => {
+    try {
+        // Busca os usuários no banco de dados
+        const users = await db.User.findAll({
+            attributes: ['id', 'username', 'email', 'createdAt']
+        });
+
+        // Busca o grupo 'root'
+        const group = await db.Group.findOne({
+            where: { name: 'root' }
+        });
+
+        // Valida se o grupo foi encontrado
+        if (!group) {
+            return res.status(404).json({ error: "Grupo 'root' não encontrado." });
+        }
+
+        // Mapeia os usuários adicionando o campo 'isAdmin'
+        const usersWithAdminStatus = await Promise.all(
+            users.map(async (user) => {
+                const isAdmin = await user.hasGroup(group.id);
+                return {
+                    ...user.toJSON(),
+                    isAdmin
+                };
+            })
+        );
+
+        res.status(200).json(usersWithAdminStatus);
+    } catch (error) {
+        const alert = error.parent ? error.parent.message : error.message;
+        res.status(500).json({ error: alert });
+    }
+};
+
+
 
 exports.createCompany = async (req,res) => {
     try{
