@@ -1,7 +1,6 @@
 const express = require('express');
 const { 
     createUser,
-    isRoot,
     groups,
     companies,
     createCompany,
@@ -21,6 +20,5 @@ router.get('/groups', groups);
 router.post('/create/group', createGroup);
 router.get('/companies', companies);
 router.post('/create/company', createCompany);
-router.get('/users/isRoot/:username', isRoot)
 
 module.exports = router;

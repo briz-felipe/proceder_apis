@@ -3,7 +3,7 @@ const db = require('../models');
 
 const router = express.Router();
 
-router.get('/users/create', (req, res) => {
+router.get('/', (req, res) => {
     res.render('root/index');
     
 });

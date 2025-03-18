@@ -40,6 +40,10 @@ async function setAlert(message, status, elementId) {
     $(`#${elementId}`).html(alertElement);
 }
 
+async function proceder_login(username, password) {
+    return await proceder_fetch('/auth/login', 'POST', { username, password });
+}
+
 async function getGroups() {
     return await proceder_fetch('/api/groups', 'GET');
 }
@@ -106,14 +110,14 @@ async function checkTokenAndProceed() {
 }
 
 async function rootAdminMenu(){
-    const username = localStorage.getItem('proceder_username');
-    const response =  await fetch(`/api/users/isRoot/${username}`,{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
+    const root = { root: false };
+    const cookies = document.cookie.split(';');
+    cookies.forEach(cookie => {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'proceder_isRoot') {
+            root.root = value === 'true';
         }
     });
-    const root = await response.json()
     if (root.root){
         const navbar = $('#navbar-ul')
         const rootLi = `

@@ -169,7 +169,6 @@ async function getUsers(){
 };
 
 $(document).ready(()=>{
-    checkTokenAndProceed(); // Check if token is valid
     rootAdminMenu(); // Show root admin menu
 
     getUsers().then(response => {

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const {sequelize,db} = require('../models/index');
 const user = require('../models/tables/user');
 const { generateRandomPassword } = require('./utils');
@@ -43,20 +44,6 @@ exports.createAccess = async (req, res) => {
         res.status(500).json({ error: alert });
     }
 };
-
-exports.isRoot = async (req,res) => {
-    try{
-        const {username} = req.params
-        const rootUser = await db.User.findOne({
-            where: { username: username, isActive: true }
-        });
-        const status = !rootUser ? false : true
-        res.status(200).json({root:status})
-    }catch (error ){
-        const alert = error.parent ? error.parent.message : error.message;
-        res.status(500).json({ error: alert });
-    }
-}
 
 exports.groups = async (req,res) => {
     try{
@@ -104,7 +91,7 @@ exports.getUsers = async (req, res) => {
 
         // Busca o grupo 'root'
         const group = await db.Group.findOne({
-            where: { name: 'root' }
+            where: { name: process.env.ROOT_NAME }
         });
 
         // Valida se o grupo foi encontrado

@@ -47,7 +47,7 @@ const createRootUser = async () => {
 
 const createGroupName = async () => {
     try {
-        const rootName = 'root';
+        const rootName = process.env.ROOT_NAME;
         const groupUser = await db.Group.findOne({
             where: { name: rootName }
         });

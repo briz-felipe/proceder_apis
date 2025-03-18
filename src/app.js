@@ -9,12 +9,15 @@ const {db} = require('./models');
 const createRootUser = require('./seed');
 
 const app = express();
+const cookieParser = require('cookie-parser');
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
 
 app.use(express.json());
+app.use(cookieParser());
+
 
 app.get('/', (req, res) => {
     res.render('login/index');
