@@ -74,8 +74,8 @@ exports.createGroup = async (req,res) => {
         const { name } = req.body;
         const newGroup = await db.Group.create({ name });
         res.status(201).json({
-            "name":newGroup.name,
             "id":newGroup.id,
+            "name":newGroup.name,
             "createdAt":newGroup.createdAt
         });
     } catch (error) {

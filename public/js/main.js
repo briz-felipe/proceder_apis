@@ -233,3 +233,17 @@ function validateForm(formId) {
 
     return isValid;
 }
+
+function createTagihy(textAreaQuey,whitelist){
+    new Tagify(textAreaQuey, {
+        enforceWhitelist: true,
+        delimiters: null,
+        keepInvalidTags: true,
+        duplicate: false,
+        whitelist: whitelist,
+        callbacks: {
+            add: console.log,  
+            remove: console.log 
+        }
+    });
+}

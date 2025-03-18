@@ -5,7 +5,8 @@ const router = express.Router();
 
 
 // Rota para criar um novo usuário
-router.post('/users', createUser);
+router.post('/user', createUser);
+router.get('/users')
 router.post('/create/access', createAccess);
 router.get('/groups', groups);
 router.post('/create/group', createGroup);

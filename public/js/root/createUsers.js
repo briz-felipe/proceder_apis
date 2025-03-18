@@ -1,11 +1,46 @@
-async function _createCompany() {
-    const companyCnpj = $('#company_cnpj')
-    const companyName = $('#company_name')
+// Seleciona os textareas
+const userGroupTextarea = document.querySelector('textarea[name="userGroup"]');
+const userCompaniesTextarea = document.querySelector('textarea[name="userComanies"]');
 
-    
+// Cria instâncias separadas do Tagify para cada textarea
+const tagifyCompanies = new Tagify(userCompaniesTextarea, {
+    enforceWhitelist: true,
+    delimiters: null,
+    keepInvalidTags: true,
+    whitelist: [],
+    callbacks: {
+        add: console.log,  // callback quando adiciona uma tag
+        remove: console.log  // callback quando remove uma tag
+    }
+});
+const tagifyGroups = new Tagify(userGroupTextarea, {  // Alterado para userGroupTextarea
+    enforceWhitelist: true,
+    delimiters: null,
+    keepInvalidTags: true,
+    duplicate: false,
+    whitelist: [],
+    callbacks: {
+        add: console.log,  // callback when adding a tag
+        remove: console.log   // callback when removing a tag
+    }
+});
+
+// Função para atualizar a whitelist dinamicamente em uma instância específica do Tagify
+function atualizarWhitelist(tagifyInstance, novosItens) {
+    tagifyInstance.settings.whitelist = novosItens;
+    if (tagifyInstance.dropdown && typeof tagifyInstance.dropdown.refilter === 'function') {
+        tagifyInstance.dropdown.refilter();
+    } else {
+        console.warn("tagify.dropdown.refilter não está disponível.");
+    }
+}
+
+async function _createCompany() {
+    const companyCnpj = $('#company_cnpj');
+    const companyName = $('#company_name');
     const formValid = validateForm('companyForm');
-    if(!formValid){
-        return 
+    if (!formValid) {
+        return;
     }
     
     if (companyCnpj.val().length < 18) {
@@ -13,54 +48,51 @@ async function _createCompany() {
         addInvalidFeedback('company_cnpj', 'Invalid CNPJ.');
         return;
     }
-    try{
-        const response = await createCompany(companyCnpj.val(),companyName.val())
+    
+    try {
+        const response = await createCompany(companyCnpj.val(), companyName.val());
         if (response && response.error) {
             console.error('Error creating company:', response.error);
-            setAlert(response.error,false,'companyAlert');
+            setAlert(response.error, false, 'companyAlert');
             return;
         }
     
         $('.invalid-feedback').remove();
         companyCnpj.val('');
         companyName.val('');
+        atualizarWhitelist(tagifyCompanies, [response.name]);
         return response;
     } catch (error) {
         console.error('Unexpected error during company creation:', error);
-        // Optionally handle unexpected errors with a generic message
-        setAlert('An unexpected error occurred.',false,'companyAlert');
+        setAlert('An unexpected error occurred.', false, 'companyAlert');
         return;
     }
 };
 
-
 async function _createGroup(name) {
-    const groupNameValue = name || $('#group_name').val();
-    console.log('groupNameValue:', groupNameValue);
+    const groupNameValue = name || $('#group_name').val().trim();
     if (!groupNameValue) {
         $('#group_name').addClass('is-invalid');
         addInvalidFeedback('group_name', 'Group name is required.');
         return;
     }
-
+    
     try {
         const response = await createGroup(groupNameValue);
-
         if (response && response.error) {
             console.error('Error creating group:', response.error);
             $('#group_name').addClass('is-invalid');
             addInvalidFeedback('group_name', response.error);
             return;
         }
-
+        
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid').addClass('is-valid');
         $('#group_name').val('');
+        atualizarWhitelist(tagifyGroups, [response.name]);
         return response;
-   
     } catch (error) {
         console.error('Unexpected error during group creation:', error);
-        // Optionally handle unexpected errors with a generic message
         $('#group_name').addClass('is-invalid');
         addInvalidFeedback('group_name', 'An unexpected error occurred.');
         return;
@@ -69,8 +101,8 @@ async function _createGroup(name) {
 
 async function _createUser(){
     const formValid = validateForm('createUserForm');
-    if(!formValid){
-        return 
+    if (!formValid) {
+        return;
     }
     
     const user = {
@@ -116,35 +148,24 @@ $(document).ready(()=>{
         const groupTableCard = $('#groupTableCard');
 
         const groupsName = groups.map(group => group.name);
-        const userGroupTextarea = document.querySelector('textarea[name="userGroup"]'); // Selects only the userGroup textarea
+        
         if (userGroupTextarea) {
             if (groupsName.length === 0) {
                 groupTableCard.hide();
                 userGroupTextarea.disabled = true;
             } else {
                 appendTableFromJson(groups, 'groupTable', true);
-
-                new Tagify(userGroupTextarea, {
-                    enforceWhitelist: true,
-                    delimiters: null,
-                    keepInvalidTags: true,
-                    duplicate: false,
-                    whitelist: groupsName,
-                    callbacks: {
-                        add: console.log,  // callback when adding a tag
-                        remove: console.log   // callback when removing a tag
-                    }
-                });
+                atualizarWhitelist(tagifyGroups, groupsName);
+               
             }
         }
     });
 
 // função para pegar empresas assim que a pagina for carregada
     getCompanies().then((companies)=>{
-        const companiesName = companies.map(company => company.name);
+        companiesName = companies.map(company => company.name);
         const companyTableCard = $('#companyTableCard');
         console.log(`empresas: ${companiesName}`);
-        const userCompaniesTextarea = document.querySelector('textarea[name="userComanies"]'); // Selects only the userComanies textarea
         
         if (userCompaniesTextarea) {
             if (companiesName.length === 0) {
@@ -153,16 +174,7 @@ $(document).ready(()=>{
             } else {
                 companies.forEach(company => delete company.updatedAt);
                 appendTableFromJson(companies, 'companyTable', true);
-                new Tagify(userCompaniesTextarea, {
-                    enforceWhitelist: true,
-                    delimiters: null,
-                    keepInvalidTags: true,
-                    whitelist: companiesName,
-                    callbacks: {
-                        add: console.log,  // callback when adding a tag
-                        remove: console.log   // callback when removing a tag
-                    }
-                });
+                atualizarWhitelist(tagifyCompanies, companiesName);
             }
         }
     });
