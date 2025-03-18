@@ -139,10 +139,9 @@ async function _createUser(){
     return response;
 };
 
-async function getUsers(){
-    response = await users();
+function setUser(users){
     const userTables = $("#usersTables")
-    response.forEach(user => {
+    users.forEach(user => {
         const card = `
         <div class="col">
             <div class="card shadow-sm">
@@ -160,11 +159,15 @@ async function getUsers(){
                 </div>
             </div>
         </div>
-
+    
         `
         userTables.append(card);
     });
-    
+};
+
+async function getUsers(){
+    response = await users();
+    setUser(response);
     return response;
 };
 
@@ -257,6 +260,7 @@ $(document).ready(()=>{
                 setAlert(response.error,false,'userAlert');
                 return
             }
+            setUser([response]);
             setAlert('Usuário criado com sucesso.',true,'userAlert');
             return 
         })
